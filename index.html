@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Registration Form</title>
+</head>
+
+<body>
+    <h1>Client Registration Form</h1>
+    <table id="clientTable" class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Sq. Foot</th>
+                <th>Bedrooms</th>
+                <th>Bathrooms</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Amy Davis</td>
+                <td>123-456-7890</td>
+                <td>amy@email.com</td>
+                <td>2,000</td>
+                <td>4</td>
+                <td>5</td>
+            </tr>
+            <tr>
+                <td>Tom Jerry</td>
+                <td>374-839-8720</td>
+                <td>tom@email.com</td>
+                <td>3,000</td>
+                <td>5</td>
+                <td>6</td>
+            </tr>
+            <tr>
+                <td>Chris Smith</td>
+                <td>530-829-7619</td>
+                <td>chris@email.com</td>
+                <td>5,000</td>
+                <td>6</td>
+                <td>6</td>
+            </tr>
+        </tbody>
+    </table>
+    <button id="export" type="button" class="button">Export to CSV</button>
+    <script src="js/client.js"></script>
+    <script>
+        const clientTable = document.getElementById("clientTable");
+        const exportButton = document.getElementById("export");
+        exportButton.addEventListener("click", () => {
+            const exporter = new client(clientTable)
+            const csvOutput = exporter.convertToCSV();
+            const csvBlob = new Blob([csvOutput], {
+                type: "text/csv"
+            });
+            const blobUrl = URL.createObjectURL(csvBlob);
+            const anchorElement = document.createElement("a");
+
+            anchorElement.href = blobUrl;
+            anchorElement.download = "client-list.csv";
+            anchorElement.click();
+            setTimeout(() => {
+                URL.revokeObjectURL(blobURL);
+            }, 500);
+
+        });
+        console.log(new client(clientTable, false).convertToCSV());
+    </script>
+</body>
+
+</html>
